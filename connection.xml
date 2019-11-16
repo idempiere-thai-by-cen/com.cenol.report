@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jdbcDataAdapter class="net.sf.jasperreports.data.jdbc.JdbcDataAdapterImpl"><name>idempiere-connection</name><driver>org.postgresql.Driver</driver><username>idempiere_dev</username><password>idempiere_dev</password><savePassword>true</savePassword><url>jdbc:postgresql://localhost:5432/idempiere_dev</url><database></database><serverAddress></serverAddress><classpath>D:\workspace\cen-idempiere\experiment\org.compiere.db.postgresql.provider\lib\postgresql.jar</classpath></jdbcDataAdapter>

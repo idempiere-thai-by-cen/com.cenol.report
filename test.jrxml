@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="test" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b1b55c6c-5abf-45d7-8211-10e7d8672bfa">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="connection.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<import value="com.cenol.jasper.*"/>
+	<scriptlet name="idempiere" class="com.cenol.jasper.Scriptlet">
+		<scriptletDescription><![CDATA[]]></scriptletDescription>
+	</scriptlet>
+	<queryString>
+		<![CDATA[select bpl.c_bpartner_location_id , bp.name ,  l.address1 , l.address2 , l.address3 , l.address4 , l.city , l.postal
+from c_bpartner bp
+inner join c_bpartner_location bpl on bp.c_bpartner_id = bpl.c_bpartner_id 
+inner join c_location l on bpl.c_location_id = l.c_location_id]]>
+	</queryString>
+	<field name="c_bpartner_location_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="c_bpartner_location_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_bpartner_location"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_bpartner"/>
+	</field>
+	<field name="address1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="address1"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_location"/>
+	</field>
+	<field name="address2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="address2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_location"/>
+	</field>
+	<field name="address3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="address3"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_location"/>
+	</field>
+	<field name="address4" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="address4"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_location"/>
+	</field>
+	<field name="city" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="city"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_location"/>
+	</field>
+	<field name="postal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="postal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_location"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="61" uuid="b69a2682-8348-48b8-9007-b3a56a08b9b3">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cordia New" size="25" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Customer Address]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="0" width="130" height="25" uuid="abd2fb94-f215-43a8-ae2a-3f40a2c8346e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="10394e38-79e6-4689-85a6-66f61a00f1b2"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cordia New" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="0" width="415" height="25" uuid="9db0a648-fc04-41b9-bd55-279dc5a19f9e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="10394e38-79e6-4689-85a6-66f61a00f1b2"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cordia New" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Address]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="0" y="0" width="130" height="25" uuid="893c76b5-c1dc-45db-ab01-157452bf906f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="10394e38-79e6-4689-85a6-66f61a00f1b2"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Cordia New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="0" width="415" height="25" uuid="a4d55efa-edc3-432b-85ed-6d8744540a91">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="10394e38-79e6-4689-85a6-66f61a00f1b2"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Cordia New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{idempiere_SCRIPTLET}.getAddress( $F{address1}, $F{address2}, $F{address3}, $F{address4}, $F{city}, $F{postal} )]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
