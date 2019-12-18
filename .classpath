@@ -5,9 +5,10 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/cenol-jasper.jar"/>
 	<classpathentry kind="lib" path="lib/org.apache.commons.lang3_3.1.0.v201403281430.jar"/>
 	<classpathentry exported="true" kind="con" path="net.sf.jasperreports.JR_CONTAINER"/>
 	<classpathentry exported="true" kind="con" path="com.jaspersoft.server.JRS_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.cenol.jasper.fonts"/>
+	<classpathentry kind="lib" path="lib/cenol-jasper.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
