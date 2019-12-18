@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="test" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b1b55c6c-5abf-45d7-8211-10e7d8672bfa">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="connection.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="110"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="881"/>
 	<import value="com.cenol.jasper.*"/>
 	<scriptlet name="idempiere" class="com.cenol.jasper.Scriptlet">
 		<scriptletDescription><![CDATA[]]></scriptletDescription>
 	</scriptlet>
 	<queryString>
-		<![CDATA[select bpl.c_bpartner_location_id , bp.name ,  l.address1 , l.address2 , l.address3 , l.address4 , l.city , l.postal
+		<![CDATA[select bpl.c_bpartner_location_id , bp.name ,  l.address1 , l.address2 , l.address3 , l.address4 , l.city , l.regionname , l.postal
 from c_bpartner bp
 inner join c_bpartner_location bpl on bp.c_bpartner_id = bpl.c_bpartner_id 
 inner join c_location l on bpl.c_location_id = l.c_location_id]]>
@@ -43,6 +45,10 @@ inner join c_location l on bpl.c_location_id = l.c_location_id]]>
 	</field>
 	<field name="postal" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="postal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_location"/>
+	</field>
+	<field name="regionname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="city"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="c_location"/>
 	</field>
 	<background>
@@ -107,7 +113,7 @@ inner join c_location l on bpl.c_location_id = l.c_location_id]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Cordia New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{idempiere_SCRIPTLET}.getAddress( $F{address1}, $F{address2}, $F{address3}, $F{address4}, $F{city}, $F{postal} )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{idempiere_SCRIPTLET}.getAddress( $F{address1}, $F{address2}, $F{address3}, $F{address4}, $F{city},$F{regionname}, $F{postal} )]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
