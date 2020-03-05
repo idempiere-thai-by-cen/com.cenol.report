@@ -14,8 +14,8 @@
        ,loc.city vendor_city , loc.regionname vendor_regionname, loc.postal vendor_postal,bpl.phone vendor_phone, bpl.fax vendor_fax , vc.name as vendor_contact
         , ot.taxamt , ot.taxbaseamt , o.grandtotal, o.description remark , t.rate , curr.iso_code currency_code, curr.description currency_name
        ---- Detail ----------
-       ,pd.name product_name
-       ,pd.value   product_code
+       ,coalesce(pd.name , c.description) product_name
+       ,coalesce(pd.value,c.name)   product_code
        , ol.description
        ,uom.name uom
        ,ol.qtyentered
@@ -40,6 +40,7 @@ inner join c_location loc on bpl.c_location_id = loc.c_location_id
 left join ad_user vc on vc.ad_user_id = o.ad_user_id 
 inner join c_orderline ol on o.c_order_id = ol.c_order_id
 left join m_product pd on pd.m_product_id = ol.m_product_id
+left join c_charge c on c.c_charge_id = ol.c_charge_id
 left join c_uom uom on uom.c_uom_id = ol.c_uom_id
 left join c_ordertax ot on o.c_order_id = ot.c_order_id
 left join c_tax t on ot.c_tax_id = t.c_tax_id
@@ -263,7 +264,7 @@ ORDER BY o.DOCUMENTNO , ol.line]]>
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="191" splitType="Stretch">
+		<band height="190" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<image scaleImage="FillFrame">
 				<reportElement x="0" y="0" width="120" height="85" uuid="5f7b4da6-1caa-4a48-b9ac-d10a9366d66e">
@@ -324,7 +325,7 @@ ORDER BY o.DOCUMENTNO , ol.line]]>
 					<font fontName="TH Sarabun New" size="12"/>
 					<paragraph leftIndent="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA["โทร "+$F{phone}+"\t แฟ็กซ์ "+$F{fax}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["โทร "+$F{phone}+(($F{fax}==null || $F{fax}.length()<=0)?"\t แฟ็กซ์ "+$F{fax}:"")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="90" width="380" height="20" uuid="33fa907c-7bf8-4f83-900d-d85d8d543934">
@@ -335,18 +336,18 @@ ORDER BY o.DOCUMENTNO , ol.line]]>
 					<font fontName="TH Sarabun New" size="12"/>
 					<paragraph leftIndent="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ชื่อผู้ขาย (Purchase From) :\t"+$F{vendor_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ชื่อผู้ขาย (Purchase From) :  "+$F{vendor_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="110" width="380" height="20" uuid="9a7ea0ae-8eaa-431c-9418-ede725675d48">
+				<reportElement x="0" y="110" width="404" height="20" uuid="9a7ea0ae-8eaa-431c-9418-ede725675d48">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="13"/>
+					<font fontName="TH Sarabun New" size="12"/>
 					<paragraph leftIndent="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ที่อยู่ ADDRESS :\t"+$P{idempiere_SCRIPTLET}.getAddress( $F{vendor_address1},  $F{vendor_address2},  $F{vendor_address3}, $F{vendor_address4},  $F{vendor_city},$F{vendor_regionname}, $F{vendor_postal} )]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ที่อยู่ ADDRESS : "+$P{idempiere_SCRIPTLET}.getAddress( $F{vendor_address1},  $F{vendor_address2},  $F{vendor_address3}, $F{vendor_address4},  $F{vendor_city},$F{vendor_regionname}, $F{vendor_postal} )]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="130" width="380" height="20" uuid="eccfece3-b94b-415b-bcb4-bceab16d6cc2">
@@ -357,7 +358,7 @@ ORDER BY o.DOCUMENTNO , ol.line]]>
 					<font fontName="TH Sarabun New" size="12"/>
 					<paragraph leftIndent="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA["โทร TEL : "+($F{vendor_phone}==null?"":$F{vendor_phone})+"\t\tแฟ็กซ์ FAX : "+($F{vendor_fax}==null?"":$F{vendor_fax})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["โทร TEL : "+($F{vendor_phone}==null?"":$F{vendor_phone})+"\tแฟ็กซ์ FAX : "+($F{vendor_fax}==null?"":$F{vendor_fax})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="150" width="380" height="20" uuid="8685dd68-669f-4042-bc0d-2767153244c7">
@@ -371,7 +372,7 @@ ORDER BY o.DOCUMENTNO , ol.line]]>
 				<textFieldExpression><![CDATA["ชื่อผู้ติดต่อ CONTACT : "+($F{vendor_contact}==null?"":$F{vendor_contact})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="380" y="100" width="90" height="20" uuid="25b29f70-d936-4ead-bde2-c9f90220376e">
+				<reportElement x="403" y="100" width="67" height="20" uuid="25b29f70-d936-4ead-bde2-c9f90220376e">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -413,7 +414,7 @@ ORDER BY o.DOCUMENTNO , ol.line]]>
 				<text><![CDATA[EXPECTED DELIVERY DATE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="380" y="120" width="90" height="20" uuid="3b643aec-0695-40f4-916e-45a45d913b7a">
+				<reportElement x="403" y="120" width="67" height="20" uuid="3b643aec-0695-40f4-916e-45a45d913b7a">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -427,7 +428,7 @@ ORDER BY o.DOCUMENTNO , ol.line]]>
 				<text><![CDATA[PAYMENT TERM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="380" y="110" width="90" height="20" uuid="4f6297c9-1a9b-4344-88d4-e07e625825b8">
+				<reportElement x="403" y="110" width="67" height="20" uuid="4f6297c9-1a9b-4344-88d4-e07e625825b8">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -448,7 +449,7 @@ ORDER BY o.DOCUMENTNO , ol.line]]>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="0" y="190" width="555" height="1" uuid="f62b3373-062b-4394-a51f-335f0d6848de"/>
+				<reportElement x="0" y="189" width="555" height="1" uuid="f62b3373-062b-4394-a51f-335f0d6848de"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
@@ -544,7 +545,7 @@ ORDER BY o.DOCUMENTNO , ol.line]]>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="13" isBold="true"/>
+					<font fontName="TH Sarabun New" size="12" isBold="true"/>
 					<paragraph leftIndent="4"/>
 				</textElement>
 				<textFieldExpression><![CDATA["กรุณาจัดส่งสินค้าที่ SHIP ADDRESS :\t"+$P{idempiere_SCRIPTLET}.getAddress( $F{delivery_address1},  $F{delivery_address2},  $F{delivery_address3}, $F{delivery_address4},  $F{delivery_city}, $F{delivery_regionname},$F{delivery_postal} )]]></textFieldExpression>

@@ -9,7 +9,7 @@
 	<parameter name="RECORD_ID" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[select og.name organization_name ,oi.taxid  ,o.documentno sonumber ,o.dateordered , pt.name paymentterm, o.datepromised ,
-       oil.address1 ,oil.address2 , oil.address3 , oil.address4 ,oil.city ,oil.regionname , oil.postal ,oi.phone , oi.fax ,
+       oil.address1 ,oil.address2 , oil.address3 , oil.address4 ,oil.city ,oil.regionname , oil.postal ,oi.phone ,oi.phone2 , oi.fax ,
        whl.address1 delivery_address1,whl.address2 delivery_address2, whl.address3 delivery_address3, whl.address4 delivery_address4,whl.city delivery_city,whl.regionname delivery_regionname, whl.postal delivery_postal ,
        bp.name as customer_name ,
        loc.address1 customer_address1,loc.address2 customer_address2, loc.address3 customer_address3, loc.address4 customer_address4
@@ -57,7 +57,7 @@ left join ad_user sales on sales.ad_user_id = o.salesrep_id
 left join c_bpartner sif on sales.c_bpartner_id = sif.c_bpartner_id 
 where o.ISSOTRX='Y'
 AND o.DocStatus <> 'VO'
-AND o.C_Order_ID = $P{RECORD_ID} 
+ AND o.C_Order_ID = $P{RECORD_ID} 
 ORDER BY o.DocumentNo DESC , ol.LINE]]>
 	</queryString>
 	<field name="organization_name" class="java.lang.String">
@@ -113,6 +113,10 @@ ORDER BY o.DocumentNo DESC , ol.LINE]]>
 		<property name="com.jaspersoft.studio.field.tree.path" value="c_location"/>
 	</field>
 	<field name="phone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="phone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_orginfo"/>
+	</field>
+	<field name="phone2" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="phone"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="ad_orginfo"/>
 	</field>
@@ -350,7 +354,7 @@ ORDER BY o.DocumentNo DESC , ol.LINE]]>
 					<font fontName="TH Sarabun New" size="12"/>
 					<paragraph leftIndent="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA["โทร "+$F{phone}+"\t แฟ็กซ์ "+$F{fax}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["โทร "+$F{phone}+(($F{fax}==null || $F{fax}.length()<=0)?"\t แฟ็กซ์ "+$F{fax}:"")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="90" width="380" height="20" uuid="33fa907c-7bf8-4f83-900d-d85d8d543934">
@@ -808,7 +812,7 @@ ORDER BY o.DocumentNo DESC , ol.LINE]]>
 					<font fontName="TH Sarabun New" size="12"/>
 					<paragraph rightIndent="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{discount_amt}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{priceentered}.multiply( $F{discount_percent} ).divide($F{discount_percent}.valueOf(100) ,$F{priceentered}.ROUND_HALF_UP )]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
 				<reportElement x="503" y="0" width="52" height="20" uuid="75bc62ee-a914-401c-ad59-0bd25437d2b5">

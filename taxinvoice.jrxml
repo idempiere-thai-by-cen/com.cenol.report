@@ -23,7 +23,6 @@ SELECT img.binarydata as logo,og.name organization_name ,oi.taxid  ,iv.documentn
        ,uom.name uom
        ,ivl.qtyentered
        ,ivl.linenetamt
-       ,ivl.pricelist - ivl.priceentered discount_amt
        ,ivl.priceentered
        ,ivl.pricelist
        ,ivl.priceactual
@@ -260,9 +259,6 @@ order by t.invoiceno , t.line]]>
 		<property name="com.jaspersoft.studio.field.label" value="linenetamt"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoiceline"/>
 	</field>
-	<field name="discount_amt" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.label" value="discount_amt"/>
-	</field>
 	<field name="priceentered" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="priceentered"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoiceline"/>
@@ -389,7 +385,7 @@ order by t.invoiceno , t.line]]>
 					<font fontName="TH Sarabun New" size="12"/>
 					<paragraph leftIndent="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA["โทร "+$F{phone}+"\t แฟ็กซ์ "+$F{fax}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["โทร "+$F{phone}+(($F{fax}==null || $F{fax}.length()<=0)?"\t แฟ็กซ์ "+$F{fax}:"")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="90" width="380" height="20" uuid="33fa907c-7bf8-4f83-900d-d85d8d543934">
@@ -771,7 +767,7 @@ order by t.invoiceno , t.line]]>
 				<text><![CDATA[รหัสสินค้า]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="110" y="0" width="199" height="20" uuid="4930337a-57ce-4312-b609-1f4ee703884b">
+				<reportElement x="110" y="0" width="230" height="20" uuid="4930337a-57ce-4312-b609-1f4ee703884b">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
 				<box topPadding="2" leftPadding="2"/>
@@ -782,7 +778,7 @@ order by t.invoiceno , t.line]]>
 				<text><![CDATA[รายละเอียดสินค้า]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="309" y="0" width="40" height="20" uuid="006c9bdd-240f-4199-b62c-54e543015913">
+				<reportElement x="340" y="0" width="40" height="20" uuid="006c9bdd-240f-4199-b62c-54e543015913">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
 				<box topPadding="2" leftPadding="2"/>
@@ -793,7 +789,7 @@ order by t.invoiceno , t.line]]>
 				<text><![CDATA[จำนวน]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="349" y="0" width="54" height="20" uuid="192918c5-2529-42de-820e-3904663f5c5b">
+				<reportElement x="380" y="0" width="54" height="20" uuid="192918c5-2529-42de-820e-3904663f5c5b">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
 				<box topPadding="2" leftPadding="2"/>
@@ -804,8 +800,9 @@ order by t.invoiceno , t.line]]>
 				<text><![CDATA[หน่วยนับ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="403" y="0" width="50" height="20" uuid="879c8a21-f350-45b2-a7da-8652b03b55dc">
+				<reportElement x="434" y="0" width="60" height="20" uuid="879c8a21-f350-45b2-a7da-8652b03b55dc">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box topPadding="2" leftPadding="2"/>
 				<textElement textAlignment="Right">
@@ -815,19 +812,7 @@ order by t.invoiceno , t.line]]>
 				<text><![CDATA[หน่วยละ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="453" y="0" width="50" height="20" uuid="6417ca31-26bc-4a11-9105-5fdab871f77a">
-					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<box topPadding="2" leftPadding="2"/>
-				<textElement textAlignment="Right">
-					<font fontName="TH Sarabun New" size="12" isBold="false"/>
-					<paragraph rightIndent="5"/>
-				</textElement>
-				<text><![CDATA[ส่วนลด]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="503" y="0" width="52" height="20" uuid="04f06d36-74cf-4eba-ac99-2c5eca086f63">
+				<reportElement x="494" y="0" width="60" height="20" uuid="04f06d36-74cf-4eba-ac99-2c5eca086f63">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -871,7 +856,7 @@ order by t.invoiceno , t.line]]>
 				<textFieldExpression><![CDATA[$F{product_code}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="110" y="0" width="199" height="20" uuid="12757742-d04e-45d3-a810-8c8b522ae590">
+				<reportElement x="110" y="0" width="230" height="20" uuid="12757742-d04e-45d3-a810-8c8b522ae590">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -882,7 +867,7 @@ order by t.invoiceno , t.line]]>
 				<textFieldExpression><![CDATA[$F{product_name}+($F{line_description}!=null && $F{line_description}.length()>0 ? $F{line_description} :"")]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.###;(#,##0.###-)" isBlankWhenNull="true">
-				<reportElement x="309" y="0" width="40" height="20" uuid="d9100610-5772-4745-a65b-6b863f03f56f">
+				<reportElement x="340" y="0" width="40" height="20" uuid="d9100610-5772-4745-a65b-6b863f03f56f">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
@@ -895,7 +880,7 @@ order by t.invoiceno , t.line]]>
 				<textFieldExpression><![CDATA[$F{qtyentered}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="349" y="0" width="54" height="20" uuid="24ea1cd7-738a-471a-a08d-16e60c0c5a0c">
+				<reportElement x="380" y="0" width="54" height="20" uuid="24ea1cd7-738a-471a-a08d-16e60c0c5a0c">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
@@ -907,7 +892,7 @@ order by t.invoiceno , t.line]]>
 				<textFieldExpression><![CDATA[$F{uom}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
-				<reportElement x="403" y="0" width="50" height="20" uuid="997ef34e-8d40-4293-a98b-82259382af90">
+				<reportElement x="434" y="0" width="60" height="20" uuid="997ef34e-8d40-4293-a98b-82259382af90">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
@@ -919,19 +904,7 @@ order by t.invoiceno , t.line]]>
 				<textFieldExpression><![CDATA[$F{priceentered}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
-				<reportElement x="453" y="0" width="50" height="20" uuid="045b8515-c6c9-47d7-ab28-587a689880ea">
-					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="12"/>
-					<paragraph rightIndent="5"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{discount_amt}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
-				<reportElement x="503" y="0" width="52" height="20" uuid="12404529-fad5-45ed-a615-eec19b096b53">
+				<reportElement x="494" y="0" width="60" height="20" uuid="12404529-fad5-45ed-a615-eec19b096b53">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
@@ -954,7 +927,7 @@ order by t.invoiceno , t.line]]>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="403" y="0" width="100" height="20" uuid="f988f6be-616c-435e-b7e6-4a8f0839e366">
+				<reportElement x="394" y="0" width="100" height="20" uuid="f988f6be-616c-435e-b7e6-4a8f0839e366">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
 				<box topPadding="2" leftPadding="2"/>
@@ -965,7 +938,7 @@ order by t.invoiceno , t.line]]>
 				<text><![CDATA[รวมมูลค่าสินค้า]]></text>
 			</staticText>
 			<textField pattern="#,##0.00;-#,##0.00">
-				<reportElement x="503" y="0" width="52" height="20" uuid="4bf94505-2c45-4b2b-8d05-03ed25352366">
+				<reportElement x="494" y="0" width="58" height="20" uuid="4bf94505-2c45-4b2b-8d05-03ed25352366">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
@@ -976,7 +949,7 @@ order by t.invoiceno , t.line]]>
 				<textFieldExpression><![CDATA[$F{taxbaseamt}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="403" y="20" width="100" height="20" uuid="1c82cebe-1784-4fe4-9fd5-7f002f21bfc0">
+				<reportElement x="394" y="20" width="100" height="20" uuid="1c82cebe-1784-4fe4-9fd5-7f002f21bfc0">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
@@ -987,7 +960,7 @@ order by t.invoiceno , t.line]]>
 				<textFieldExpression><![CDATA["ภาษีมูลค่าเพิ่ม "+$F{rate}.intValueExact()+"%"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00">
-				<reportElement x="503" y="20" width="52" height="20" uuid="f6bbeaef-e039-47b2-a981-2f93da56f8d9">
+				<reportElement x="494" y="20" width="58" height="20" uuid="f6bbeaef-e039-47b2-a981-2f93da56f8d9">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
@@ -998,7 +971,7 @@ order by t.invoiceno , t.line]]>
 				<textFieldExpression><![CDATA[$F{taxamt}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="403" y="40" width="100" height="20" uuid="e18ffeaa-c035-47f1-a2b0-5fa02e4555b1">
+				<reportElement x="394" y="40" width="100" height="20" uuid="e18ffeaa-c035-47f1-a2b0-5fa02e4555b1">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
 				<box topPadding="2" leftPadding="2"/>
@@ -1009,7 +982,7 @@ order by t.invoiceno , t.line]]>
 				<text><![CDATA[ยอดเงินสุทธิ]]></text>
 			</staticText>
 			<textField pattern="#,##0.00;-#,##0.00">
-				<reportElement x="503" y="40" width="52" height="20" uuid="6e53b17f-b43b-4e4a-a6db-53b8a371ef9f">
+				<reportElement x="494" y="40" width="58" height="20" uuid="6e53b17f-b43b-4e4a-a6db-53b8a371ef9f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
@@ -1034,7 +1007,7 @@ order by t.invoiceno , t.line]]>
 				<text><![CDATA[หมายเหตุ:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="40" y="0" width="363" height="40" uuid="4651baff-5582-459a-bf41-764cc0ed76fe">
+				<reportElement x="40" y="0" width="353" height="40" uuid="4651baff-5582-459a-bf41-764cc0ed76fe">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -1046,7 +1019,7 @@ order by t.invoiceno , t.line]]>
 				<textFieldExpression><![CDATA[$F{remark}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="0" y="40" width="403" height="20" uuid="270cd254-b63c-4f12-b8e6-43f600cfa45c">
+				<reportElement x="0" y="40" width="392" height="20" uuid="270cd254-b63c-4f12-b8e6-43f600cfa45c">
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
@@ -1069,7 +1042,7 @@ order by t.invoiceno , t.line]]>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="403" y="1" width="1" height="61" uuid="ada13129-1b5f-4352-9678-d41d7612ea63"/>
+				<reportElement x="393" y="0" width="1" height="61" uuid="ada13129-1b5f-4352-9678-d41d7612ea63"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
@@ -1241,7 +1214,7 @@ order by t.invoiceno , t.line]]>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="403" y="0" width="100" height="20" uuid="465e884f-3ad4-42c2-b4c2-483069659aa1">
+				<reportElement x="393" y="0" width="101" height="20" uuid="465e884f-3ad4-42c2-b4c2-483069659aa1">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
 				<box topPadding="2" leftPadding="2"/>
@@ -1252,7 +1225,7 @@ order by t.invoiceno , t.line]]>
 				<text><![CDATA[รวมมูลค่าสินค้า]]></text>
 			</staticText>
 			<textField pattern="#,##0.00;-#,##0.00">
-				<reportElement x="503" y="0" width="52" height="20" uuid="5d2b0a9d-5fa3-43d2-8893-612fd2872c30">
+				<reportElement x="494" y="0" width="60" height="20" uuid="5d2b0a9d-5fa3-43d2-8893-612fd2872c30">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
@@ -1263,7 +1236,7 @@ order by t.invoiceno , t.line]]>
 				<textFieldExpression><![CDATA[$F{taxbaseamt}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="403" y="20" width="100" height="20" uuid="198f8b4d-2a03-4229-be01-f75336855a32">
+				<reportElement x="393" y="20" width="101" height="20" uuid="198f8b4d-2a03-4229-be01-f75336855a32">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
@@ -1274,7 +1247,7 @@ order by t.invoiceno , t.line]]>
 				<textFieldExpression><![CDATA["ภาษีมูลค่าเพิ่ม "+$F{rate}.intValueExact()+"%"]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00;-#,##0.00">
-				<reportElement x="503" y="20" width="52" height="20" uuid="1f5a35cd-47fb-4486-8c01-86f9293901e9">
+				<reportElement x="494" y="20" width="60" height="20" uuid="1f5a35cd-47fb-4486-8c01-86f9293901e9">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
@@ -1285,7 +1258,7 @@ order by t.invoiceno , t.line]]>
 				<textFieldExpression><![CDATA[$F{taxamt}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="403" y="40" width="100" height="20" uuid="a412034b-0c95-44bc-a950-ca1089be411e">
+				<reportElement x="393" y="40" width="101" height="20" uuid="a412034b-0c95-44bc-a950-ca1089be411e">
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
 				<box topPadding="2" leftPadding="2"/>
@@ -1296,7 +1269,7 @@ order by t.invoiceno , t.line]]>
 				<text><![CDATA[ยอดเงินสุทธิ]]></text>
 			</staticText>
 			<textField pattern="#,##0.00;-#,##0.00">
-				<reportElement x="503" y="40" width="52" height="20" uuid="46082675-888c-49d7-b64d-c9f5c1184754">
+				<reportElement x="494" y="40" width="60" height="20" uuid="46082675-888c-49d7-b64d-c9f5c1184754">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
@@ -1321,7 +1294,7 @@ order by t.invoiceno , t.line]]>
 				<text><![CDATA[หมายเหตุ:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="40" y="0" width="363" height="40" uuid="9a5d4fb5-60d8-49f5-aa94-2b99ecfc95da">
+				<reportElement x="40" y="0" width="352" height="40" uuid="9a5d4fb5-60d8-49f5-aa94-2b99ecfc95da">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 					<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -1333,7 +1306,7 @@ order by t.invoiceno , t.line]]>
 				<textFieldExpression><![CDATA[$F{remark}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement x="0" y="40" width="403" height="20" uuid="e502824a-0777-4171-910a-d47498d9560f">
+				<reportElement x="0" y="40" width="393" height="20" uuid="e502824a-0777-4171-910a-d47498d9560f">
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
@@ -1356,7 +1329,7 @@ order by t.invoiceno , t.line]]>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="403" y="1" width="1" height="61" uuid="e6ff8d3c-b110-498e-a759-840f26ec10a4"/>
+				<reportElement x="393" y="0" width="1" height="61" uuid="e6ff8d3c-b110-498e-a759-840f26ec10a4"/>
 				<graphicElement>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</graphicElement>
